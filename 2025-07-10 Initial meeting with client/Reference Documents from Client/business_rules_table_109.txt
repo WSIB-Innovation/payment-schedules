@@ -1,0 +1,155 @@
+Business Rules for Updating Table 109 -  Weekend/Holiday Table in Arrears
+
+
+Note: 
+
+	This table is accessed through screen T204 on the CICS menu.
+
+	This table controls payments for all claims with accident dates on or after April 1, 1997.
+
+	This table should be updated in production by October 1. 
+
+
+Business Rules
+
+1.	To determine what the system will process to, look at the run date (i.e. the calendar date) & subtract 2 working days. (The 2 days do not include the run date.) 
+
+•	For Saturday & Sunday run dates, enter the same date that was chosen for the Friday.   
+
+•	The value entered for a holiday (on a regular working day, i.e. not Saturday/Sunday) is the same as the previous working day. For example, on a holiday Monday, the weekend/holiday date is the same as it is for the previous Friday.  
+
+•	For the accelerated payment schedule at Christmas, check previous schedules for guidance. (Current schedule illustrates that the accelerated schedule starts mid-month on Thursday.)	
+
+•	It does not matter if the issue date is in the next month. Just enter the day of the month & not the month. 
+
+2.	Generally, the schedule for issuing payments is as follows: 
+
+Run Date					Issues for (non-inclusive) 
+
+Monday 						previous Thursday
+Tuesday						previous Friday 
+Wednesday 	previous Saturday, Sunday & Monday *
+Thursday					previous Tuesday
+Friday						previous Wednesday 
+
+	
+
+*	The date of the Monday (in normal processing weeks) will be entered. 
+
+3. 	A blank table 109 is to be printed. Make 12 copies – one for each month – and  record all week-end/holiday dates on the paper copy.   
+
+•	Ensure that the “from” and “to” date, for each run date,is the same. 
+
+•	For those months where there are not 31 days, leave those fields blank. 
+
+4. 	Once the paper copies have been completed, the dates are to be reviewed by the individual who has secondary responsibility for updating the table. Once both agree on the dates, the dates for all months should be entered into table 109.  
+
+•	Even though the “from” and “to” dates are the same, they both have to be entered into the table. 
+
+5.	Generally (except around holiday dates), there is a difference in the “pay to” dates
+of 1 week between tables 107 & 109. The dates should be randomly checked to ensure that they are correct. 
+
+6.	When selecting the issue (“pay to”) date around a holiday, consider that the worker is due their cheque 1 week after the “pay to” date. Not counting the processing date, we allow the cheque to be in the mail for 3 business days & anticipate that the cheque will be received on the 3rd business day.  
+
+7. 	Once the dates have been entered, a copy of the new table is to be printed & retained in hard copy form. 
+
+8. 	Once table 109 has been updated in production, a Testing Co-Ordinator is to be advised such that the table can be updated in acceptance. 
+
+9. 	Once the table has been updated in production, a copy of the table is sent to various users. Please note appendix 2 for distribution list.   
+
+
+Important Notes on Navigation
+
+	When entering the values into the table for the first time, key in “I” (insert), the year and month & hit ENTER ONCE. 
+
+	To change/read an existing table entry (i.e. find out in November that the Board’s offices will be closed between Christmas and the new year), key in a “U” (update) in the action field, the year and the month & hit ENTER ONCE.  
+
+	The delete capability (“D”) exists but is rarely used. Instead the table is updated. 
+
+
+	Once the new/existing table is displayed for entry, do NOT hit ENTER again until all the entries have been entered. The second ENTER will confirm the creation of the table. (Remember ENTER was hit the first time after the month & year was entered). 
+
+	If the table is confirmed before all the entries have been made, the system will create a partially completed table. To complete the table, go back to the blank table screen & enter the action “U” with the appropriate dates. The system will display the partially completed table & the entries can be completed. Once done, hit ENTER & the completed table will be saved. 
+
+	To get out after looking at a table, hit PF3.  
+
+
+Notes 
+
+•	FEL payments are processed 2 to 3 months in advance. If the January week-end/holiday dates table is not up by October 1, FEL payment staff will not be able to put up new FEL’s with a start date of January 1. 
+
+•	The December table should be initially completed as if the Board will be open between Christmas & the New Year. However, this decision should be reconfirmed by mid-November. If necessary, the December table should be updated & a revised copy sent to the users. 
+
+•	Table 109 value dates can NOT be future dated (i.e. the week-end date is greater than the run date). The only way to accelerate the payment schedule, primarily at year end, is to make the holiday date equal to the run date. 
+
+•	Ensure that there no more than 14 days between the holiday dates entered for table 107 & table 109 for the same run date. (This is a problem at year end.) If there are 15 or more days, the system will not issue cheques. 
+
+
+RUN DATE		TABLE 107		TABLE 109 		STATUS  
+
+December 24		01			24			OK
+
+December 24		04			21			NO 
+
+•	When this table is being updated, tables 107, 108, 122 & the Survivors’ pension payment table should be updated at the same time.
+		
+
+ 
+Appendix 1- Table 109
+
+T2MA013   X08A      WEEKEND/HOLIDAY TABLE IN ARREARS        14:48:39  00/09/14 
+                                                                                
+                                                                                
+   ACTION :   : (DELETE=D,INSERT=I,UPDATE=U)    YEAR :          MONTH :         
+                                                                                
+      RUN   WKEND/HLDY     RUN  WKEND/HLDY        RUN  WKEND/HLDY               
+      DAY   FROM TO        DAY  FROM  TO          DAY  FROM TO                  
+       01 :                 02 :                  03 :                          
+       04 :                 05 :                  06 :                          
+       07 :                 08 :                  09 :                          
+       10 :                 11 :                  12 :                          
+       13 :                 14 :                  15 :                          
+       16 :                 17 :                  18 :                          
+       19 :                 20 :                  21 :                          
+       22 :                 23 :                  24 :                          
+       25 :                 26 :                  27 :                          
+       28 :                 29 :                  30 :                          
+       31 :                                                                     
+                                                                                
+  PLEASE ENTER FUNCTION YEAR AND MONTH                                          
+ ENTER (PRESSED 1ST)-ENTER REQ (2ND)EXEC REQ, PF5-EXEC REQ AND SWITCH TO MENU,  
+ PF9-CANCEL REQ, PF3-CANCEL REQ AND SWITCH TO MENU, PA2-PRINT SCREEN            
+                                                                                
+ 
+Appendix 2 – Distribution List for Table 109 
+
+
+
+Managers, WBS
+Rose Dioso    
+Partha Sarathy
+Margit Doering 
+Ron Partridge
+Toni Manweiler
+Kim Revoy
+David Londry
+Bill Rattan
+Ken Henry
+Joe Sgro
+Deb Oakley 
+Maura Crowther
+Pat Johnson
+Eileen Zuraw
+Bonita Maloney
+Denise Fujiwara
+Shirley Ingrao
+Lawrence Mak
+Rita Murnaghan
+Cathy Brown 
+Tony Judd
+Bernadette Huang
+Mark Foley
+Jeff Henessey
+
+
+

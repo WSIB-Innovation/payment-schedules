@@ -1,0 +1,72 @@
+Detailed summary of the July 10, 2025 meeting on “Machine learning – creation of payment schedule”:
+
+---
+
+
+1. Meeting Context and Purpose
+
+- The meeting was called to discuss the highly manual process for generating annual payment holiday tables, which are necessary for the correct scheduling of benefit payments. The process has been delayed due to a recent labour disruption.
+- The team is exploring opportunities to automate or improve this process, possibly using machine learning or other innovative approaches.
+
+
+2. Current Process Overview
+
+- Payment holiday tables (tables 107, 108, 109, and 122) are created each year. These tables dictate when benefit payments are released, avoiding weekends and statutory holidays.
+- Table 107: Covers Bill 101/pre-Bill 101, and Bill 162 claims.
+- Table 109: Covers Bill 99 claims.
+- The tables are referenced by both batch processing and online systems to ensure payments are scheduled on valid business days.
+- The tables must be ready for testing in the ACP test environment by October each year, as part of the indexation and year-end process.
+
+
+3. Manual Work and Pain Points
+
+- The process is very manual: Analysts must go through physical calendars, count days, account for weekends and all statutory holidays, and adjust payment cycles accordingly.
+- If a holiday falls on or near a payment date, extra cycle days are added to ensure payments are not delayed.
+- This is especially important for cheque payments (Canada Post delays).
+- The manual process takes about two to three weeks (not full time), and requires specialized knowledge.
+- The current business analyst handling this is close to retirement, creating a risk of knowledge loss.
+
+
+4. Business Rules and Flexibility
+
+- There are business rules used to generate these tables, which are documented but require interpretation and expertise.
+- Treasury must sign off on the tables each year and may request changes based on how holidays fall (e.g., adding an extra day if a holiday falls on a Monday or adjusting for Christmas/Boxing Day anomalies).
+- There are exceptions each year that sometimes require last-minute changes.
+
+
+5. Explored Automation Solutions
+
+- AI/ML Automation: The team is considering whether machine learning or AI could automate the table generation by providing business rules, past examples, and the upcoming year’s calendar.
+- Programmatic Copy from Previous Years: For years where the calendar matches a previous year (e.g., 2026 and 2015), the idea is to copy the old table and adjust for any new holidays (e.g., Family Day, National Day for Truth and Reconciliation).
+- Both approaches would likely still require a final manual check and sign-off.
+
+
+6. Documentation and Knowledge Transfer
+
+- Supporting documents exist, including:
+- Screenshots of the tables.
+- Summaries of the business rules.
+- Copies of previous years’ tables.
+- Additional summary documents created by team members.
+- The team agreed to collect and share all this documentation with the AI/analytics team for further review.
+
+
+7. Next Steps, Responsibilities, and Follow-up
+
+- Documentation: Gather and attach all relevant documentation, including video, transcript, and business rules.
+- Triage and Review: The request and all supporting material will be shared with the analytics/AI team, who will assess feasibility and prioritize it among other projects.
+- Proof of Concept: Consider a small proof of concept to test the viability of automation.
+- Ongoing Communication: Irina (original requestor) is the point of contact, but others can provide more information if needed.
+- Internal Alignment: The innovation lab or internal teams may also be asked to brainstorm additional solutions.
+- Prioritization: The work will be triaged and prioritized by the team that manages client engagement and analytics projects.
+
+
+8. Closing Remarks
+
+- Everyone agreed that automating or simplifying this process would be a significant benefit due to:
+- Manual workload reduction.
+- Error mitigation.
+- Reduced risk from expert retirement.
+- Allowing business analysts to focus on higher-value work.
+- The team will proceed with gathering information and exploring both AI and programmatic automation options, looping in all relevant stakeholders.
+
