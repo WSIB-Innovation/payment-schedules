@@ -181,14 +181,34 @@
         }
 
         .collapsible-content {
-            max-height: 0;
+            max-height: 300px;
             overflow: hidden;
             transition: max-height 0.3s ease-out;
+            position: relative;
         }
 
         .collapsible-content.active {
             max-height: 10000px;
             transition: max-height 0.5s ease-in;
+        }
+
+        .collapsible-content:not(.active).full-year::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(
+                transparent 0%,
+                rgba(255, 255, 255, 0.4) 60%,
+                var(--trillium) 100%
+            );
+            pointer-events: none;
+        }
+
+        .collapsible-content.single-month {
+            max-height: none;
         }
 
         .table-output {
@@ -845,6 +865,8 @@
                 successMessage = `Payment Schedule for Table ${tableType} All Months ${year} Generated Successfully`;
             }
 
+            const contentClass = monthValue ? 'single-month' : 'full-year';
+            
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = `
                 <h3>${successMessage}</h3>
@@ -852,7 +874,7 @@
                     <span>${title}</span>
                     <span class="collapsible-icon">▼</span>
                 </button>
-                <div class="collapsible-content" id="scheduleContent">
+                <div class="collapsible-content ${contentClass}" id="scheduleContent">
                     <div class="table-output">${results}</div>
                 </div>
             `;

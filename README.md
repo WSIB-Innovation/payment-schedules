@@ -1,16 +1,45 @@
 # Payment Schedule Generator
 
-An advanced CLI tool that generates both **Table 107** and **Table 109** payment schedule tables using machine learning-optimized algorithms for benefit payment processing.
+An advanced payment schedule generation system supporting both **Table 107** and **Table 109** with machine learning-optimized algorithms for benefit payment processing.
 
-## Features
+## 🌐 Web Interface (Recommended for Business Users)
 
+**`payment_schedule_generator.html`** - A professional, self-contained web application perfect for business users.
+
+![Web Interface Screenshot](img/website_screenshot.png)
+
+### Features:
+✅ **Zero Installation** - Works on any computer with a web browser  
+✅ **Professional Design** - Government-style interface with clean UX  
+✅ **Auto-Generation** - Results update instantly as you change options  
+✅ **Smart Preview** - Shows table preview with expand/collapse functionality  
+✅ **Download Results** - Save tables as `.txt` files  
+✅ **Cross-Platform** - Works on Windows, Mac, Linux  
+
+### How to Use:
+1. **Double-click** `payment_schedule_generator.html` 
+2. **Select** Table Type (107 or 109), Year, and optional Month
+3. **View** results automatically generated
+4. **Click** the blue header to expand/collapse full table
+5. **Download** results as text files for sharing
+
+### Distribution:
+Simply email the HTML file to business users - no installation or IT support needed!
+
+## 🖥️ Command Line Interface (For Developers)
+
+Perfect for automation, integration, and development workflows.
+
+Advanced CLI tool with the same algorithms powering the web interface.
+
+### Features:
 ✅ **Dual Table Support**: Table 107 and Table 109 generation  
 ✅ **High Accuracy**: 95%+ within 2-day target for both table types  
 ✅ **Smart Algorithms**: Dedicated optimized logic for each table  
 ✅ **Comprehensive Testing**: 8,000+ test cases across 12+ years of data  
 ✅ **Production Ready**: Robust error handling and validation  
 
-## Quick Start
+## CLI Quick Start
 
 1. **Setup Environment:**
 ```bash
@@ -48,6 +77,16 @@ python test_algorithm.py
 
 🏆 **Both algorithms exceed 95% target accuracy**
 
+## 🎯 Which Version to Use?
+
+| Use Case | Recommended Version | Why |
+|----------|-------------------|-----|
+| **Business Users** | 🌐 **HTML Web Interface** | No installation, easy sharing, professional UI |
+| **End Users** | 🌐 **HTML Web Interface** | Just double-click and use - works everywhere |
+| **Developers** | 🖥️ **CLI Tool** | Integration, automation, scripting, testing |
+| **System Integration** | 🖥️ **CLI Tool** | Batch processing, automated workflows |
+| **One-off Calculations** | 🌐 **HTML Web Interface** | Fastest and easiest |
+
 ## Technical Architecture
 
 - **Table109Generator**: Sophisticated algorithm with cross-month boundary handling, Christmas period optimization, and Tuesday bias correction
@@ -56,11 +95,18 @@ python test_algorithm.py
 
 ## Files
 
-- `payment_schedule_generator.py` - Core algorithms
-- `test_algorithm.py` - Comprehensive testing framework  
-- `algorithm_detailed_diagram.md` - Technical architecture documentation
-- `final_summary_report.txt` - Development summary and insights
+### Main Applications
+- **`payment_schedule_generator.html`** - 🌐 **Web interface** - Professional UI for business users (recommended)
+- **`payment_schedule_generator.py`** - 🖥️ **CLI tool** - Core algorithms for developers and automation
+
+### Development & Testing
+- `test_algorithm.py` - Comprehensive testing framework with 8,000+ test cases
+- `algorithm_performance_report.md` - Detailed technical analysis and performance metrics
 - `table_examples/` - Historical ground truth data (2014-2026)
+
+### Documentation
+- `README.md` - This documentation
+- `requirements.txt` - Python dependencies for CLI version
 
 ## Documentation
 
