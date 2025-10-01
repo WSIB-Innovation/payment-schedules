@@ -1,7 +1,7 @@
 # Payment Schedule Algorithm Performance Report
 
 **Generated:** October 1, 2025  
-**Author:** AI Algorithm Engineer  
+**Author:** Roman Kaharlytskyi  
 **Target:** Maximum 2 days offset for payment predictions  
 
 ---

@@ -8,6 +8,7 @@ Provides comprehensive performance metrics for each table type.
 import os
 import re
 import calendar
+import argparse
 from datetime import datetime
 from collections import defaultdict
 from payment_schedule_generator import PaymentScheduleGenerator
@@ -108,7 +109,64 @@ def parse_month_data(month_section):
     return data
 
 
-def test_table_performance(table_type):
+def log_beyond_target_errors(errors, table_type, output_dir=None):
+    """Log all 3+ day errors to a timestamped file."""
+    if output_dir:
+        filename = os.path.join(output_dir, f"beyond_target_errors_table_{table_type}.txt")
+        print_log = False  # Don't print when saving to report folder
+    else:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"beyond_target_errors_table_{table_type}_{timestamp}.txt"
+        print_log = True
+    
+    try:
+        with open(filename, 'w') as f:
+            f.write(f"BEYOND TARGET ERRORS (3+ days) - TABLE {table_type}\n")
+            f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write("=" * 60 + "\n\n")
+            
+            # Sort errors by error magnitude (worst first)
+            sorted_errors = sorted(errors, key=lambda x: x['error'], reverse=True)
+            
+            f.write(f"Total errors: {len(sorted_errors)}\n\n")
+            
+            # Group by error magnitude
+            error_groups = {}
+            for error in sorted_errors:
+                error_days = error['error']
+                if error_days not in error_groups:
+                    error_groups[error_days] = []
+                error_groups[error_days].append(error)
+            
+            # Write summary by error magnitude
+            f.write("SUMMARY BY ERROR MAGNITUDE:\n")
+            f.write("-" * 30 + "\n")
+            for error_days in sorted(error_groups.keys(), reverse=True):
+                count = len(error_groups[error_days])
+                f.write(f"{error_days:2d} days off: {count:3d} cases\n")
+            f.write("\n")
+            
+            # Write detailed list
+            f.write("DETAILED ERROR LIST:\n")
+            f.write("-" * 30 + "\n")
+            f.write("Date       | Predicted | Actual | Error\n")
+            f.write("-" * 40 + "\n")
+            
+            for error in sorted_errors:
+                f.write(f"{error['date']} |    {error['predicted']:2d}     |   {error['actual']:2d}   | {error['error']:2d} days\n")
+        
+        if print_log:
+            print(f"📄 Logged {len(errors)} beyond-target errors to: {filename}")
+        
+        return filename
+        
+    except Exception as e:
+        if print_log:
+            print(f"❌ Error writing log file {filename}: {e}")
+        return None
+
+
+def test_table_performance(table_type, output_dir=None):
     """Test algorithm performance for a specific table type."""
     print(f"\n🧪 TESTING TABLE {table_type} PERFORMANCE")
     print("=" * 60)
@@ -126,6 +184,7 @@ def test_table_performance(table_type):
     two_day_errors = 0
     beyond_target_errors = 0
     large_errors = []
+    all_beyond_target_errors = []  # Store all 3+ day errors for logging
     
     # Test each case
     for (year, month), month_data in ground_truth.items():
@@ -146,13 +205,22 @@ def test_table_performance(table_type):
                 two_day_errors += 1
             else:
                 beyond_target_errors += 1
+                # Store all 3+ day errors for logging
+                error_info = {
+                    'date': f"{year}-{month:02d}-{day:02d}",
+                    'predicted': predicted_payment,
+                    'actual': actual_payment,
+                    'error': error,
+                    'table_type': table_type
+                }
+                all_beyond_target_errors.append(error_info)
+                
                 if error > 10:
-                    large_errors.append({
-                        'date': f"{year}-{month:02d}-{day:02d}",
-                        'predicted': predicted_payment,
-                        'actual': actual_payment,
-                        'error': error
-                    })
+                    large_errors.append(error_info)
+    
+    # Log all 3+ day errors to file only if save_report is enabled
+    if all_beyond_target_errors and output_dir:
+        log_beyond_target_errors(all_beyond_target_errors, table_type, output_dir)
     
     # Calculate percentages
     if total_cases == 0:
@@ -174,6 +242,7 @@ def test_table_performance(table_type):
         'two_day_errors': two_day_errors,
         'beyond_target_errors': beyond_target_errors,
         'large_errors': large_errors,
+        'all_beyond_target_errors': all_beyond_target_errors,
         'perfect_pct': perfect_pct,
         'one_day_pct': one_day_pct,
         'two_day_pct': two_day_pct,
@@ -227,49 +296,104 @@ def print_table_results(results):
 
 def print_comparative_summary(table_107_results, table_109_results):
     """Print comparative summary between table types."""
-    print("\n" + "=" * 80)
+    print("\n" + "=" * 95)
     print("📊 COMPARATIVE PERFORMANCE SUMMARY")
-    print("=" * 80)
+    print("=" * 95)
     
     if not table_107_results and not table_109_results:
         print("❌ No results to compare")
         return
         
     print()
-    print("┌─────────────────────────┬───────────────┬───────────────┐")
-    print("│         METRIC          │   TABLE 107   │   TABLE 109   │")
-    print("├─────────────────────────┼───────────────┼───────────────┤")
+    print("┌─────────────────────────┬─────────────────────────────┬─────────────────────────────┐")
+    print("│         METRIC          │          TABLE 107          │          TABLE 109          │")
+    print("│                         │   Count   │        %        │   Count   │        %        │")
+    print("├─────────────────────────┼───────────┼─────────────────┼───────────┼─────────────────┤")
     
     # Test cases
     cases_107 = table_107_results['total_cases'] if table_107_results else 0
     cases_109 = table_109_results['total_cases'] if table_109_results else 0
-    print(f"│ Total Test Cases        │ {cases_107:>11,} │ {cases_109:>11,} │")
+    print(f"│ Total Test Cases        │ {cases_107:>7,} │      100.0%     │ {cases_109:>7,} │      100.0%     │")
+    print("├─────────────────────────┼───────────┼─────────────────┼───────────┼─────────────────┤")
     
     # Perfect matches
-    perfect_107 = f"{table_107_results['perfect_pct']:>6.1f}%" if table_107_results else "    N/A"
-    perfect_109 = f"{table_109_results['perfect_pct']:>6.1f}%" if table_109_results else "    N/A"
-    print(f"│ Perfect Matches         │ {perfect_107:>11} │ {perfect_109:>11} │")
+    perfect_107_count = table_107_results['perfect_matches'] if table_107_results else 0
+    perfect_107_pct = table_107_results['perfect_pct'] if table_107_results else 0
+    perfect_109_count = table_109_results['perfect_matches'] if table_109_results else 0
+    perfect_109_pct = table_109_results['perfect_pct'] if table_109_results else 0
+    print(f"│ Perfect Matches (0 days)│ {perfect_107_count:>7,} │      {perfect_107_pct:>5.1f}%     │ {perfect_109_count:>7,} │      {perfect_109_pct:>5.1f}%     │")
     
-    # Within target
-    within_107 = f"{table_107_results['within_target_pct']:>6.1f}%" if table_107_results else "    N/A"
-    within_109 = f"{table_109_results['within_target_pct']:>6.1f}%" if table_109_results else "    N/A"
-    print(f"│ Within Target (≤2 days) │ {within_107:>11} │ {within_109:>11} │")
+    # 1-day offset
+    one_day_107_count = table_107_results['one_day_errors'] if table_107_results else 0
+    one_day_107_pct = table_107_results['one_day_pct'] if table_107_results else 0
+    one_day_109_count = table_109_results['one_day_errors'] if table_109_results else 0
+    one_day_109_pct = table_109_results['one_day_pct'] if table_109_results else 0
+    print(f"│ 1-Day Offset            │ {one_day_107_count:>7,} │      {one_day_107_pct:>5.1f}%     │ {one_day_109_count:>7,} │      {one_day_109_pct:>5.1f}%     │")
     
-    # Beyond target
-    beyond_107 = f"{table_107_results['beyond_target_pct']:>6.1f}%" if table_107_results else "    N/A"
-    beyond_109 = f"{table_109_results['beyond_target_pct']:>6.1f}%" if table_109_results else "    N/A"
-    print(f"│ Beyond Target (3+ days) │ {beyond_107:>11} │ {beyond_109:>11} │")
+    # 2-day offset
+    two_day_107_count = table_107_results['two_day_errors'] if table_107_results else 0
+    two_day_107_pct = table_107_results['two_day_pct'] if table_107_results else 0
+    two_day_109_count = table_109_results['two_day_errors'] if table_109_results else 0
+    two_day_109_pct = table_109_results['two_day_pct'] if table_109_results else 0
+    print(f"│ 2-Day Offset            │ {two_day_107_count:>7,} │      {two_day_107_pct:>5.1f}%     │ {two_day_109_count:>7,} │      {two_day_109_pct:>5.1f}%     │")
+    
+    # 3+ day offset (beyond target)
+    beyond_107_count = table_107_results['beyond_target_errors'] if table_107_results else 0
+    beyond_107_pct = table_107_results['beyond_target_pct'] if table_107_results else 0
+    beyond_109_count = table_109_results['beyond_target_errors'] if table_109_results else 0
+    beyond_109_pct = table_109_results['beyond_target_pct'] if table_109_results else 0
+    print(f"│ 3+ Day Offset           │ {beyond_107_count:>7,} │      {beyond_107_pct:>5.1f}%     │ {beyond_109_count:>7,} │      {beyond_109_pct:>5.1f}%     │")
+    
+    print("├─────────────────────────┼───────────┼─────────────────┼───────────┼─────────────────┤")
+    
+    # Within target (≤2 days)
+    within_107_count = table_107_results['within_target'] if table_107_results else 0
+    within_107_pct = table_107_results['within_target_pct'] if table_107_results else 0
+    within_109_count = table_109_results['within_target'] if table_109_results else 0
+    within_109_pct = table_109_results['within_target_pct'] if table_109_results else 0
+    print(f"│ Within Target (≤2 days) │ {within_107_count:>7,} │      {within_107_pct:>5.1f}%     │ {within_109_count:>7,} │      {within_109_pct:>5.1f}%     │")
+    
+    print("├─────────────────────────┼───────────┼─────────────────┼───────────┼─────────────────┤")
     
     # Large errors
     large_107 = len(table_107_results['large_errors']) if table_107_results else 0
     large_109 = len(table_109_results['large_errors']) if table_109_results else 0
-    print(f"│ Large Errors (>10 days) │ {large_107:>11} │ {large_109:>11} │")
+    print(f"│ Large Errors (>10 days) │ {large_107:>7,} │        —        │ {large_109:>7,} │        —        │")
     
-    print("└─────────────────────────┴───────────────┴───────────────┘")
+    print("└─────────────────────────┴───────────┴─────────────────┴───────────┴─────────────────┘")
     
 
 
-def comprehensive_algorithm_test():
+def capture_console_output(func, *args, **kwargs):
+    """Capture console output for saving to file."""
+    import io
+    import sys
+    
+    old_stdout = sys.stdout
+    sys.stdout = captured_output = io.StringIO()
+    
+    try:
+        result = func(*args, **kwargs)
+        output = captured_output.getvalue()
+        return result, output
+    finally:
+        sys.stdout = old_stdout
+
+
+def create_report_folder():
+    """Create timestamped report folder."""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    folder_name = f"algorithm_test_report_{timestamp}"
+    
+    try:
+        os.makedirs(folder_name, exist_ok=True)
+        return folder_name
+    except Exception as e:
+        print(f"❌ Error creating report folder {folder_name}: {e}")
+        return None
+
+
+def comprehensive_algorithm_test(save_report=False):
     """Run comprehensive tests on both table types."""
     print("=" * 80)
     print("COMPREHENSIVE PAYMENT SCHEDULE ALGORITHM TEST")
@@ -277,13 +401,20 @@ def comprehensive_algorithm_test():
     print("Testing algorithm performance on both Table 107 and Table 109")
     print("Using all available historical data with granular quality metrics")
     
+    # Create report folder if needed
+    report_folder = None
+    if save_report:
+        report_folder = create_report_folder()
+        if report_folder:
+            print(f"📁 Report will be saved to: {report_folder}")
+    
     # Test Table 109 (our primary optimized table)
-    table_109_results = test_table_performance("109")
+    table_109_results = test_table_performance("109", report_folder)
     if table_109_results:
         print_table_results(table_109_results)
     
     # Test Table 107 (Table 109 + 7 days)
-    table_107_results = test_table_performance("107")
+    table_107_results = test_table_performance("107", report_folder)
     if table_107_results:
         print_table_results(table_107_results)
     
@@ -293,7 +424,58 @@ def comprehensive_algorithm_test():
     print("\n" + "=" * 80)
     print("COMPREHENSIVE TEST COMPLETE")
     print("=" * 80)
+    
+    # Save console output to file if requested
+    if save_report and report_folder:
+        try:
+            # Capture the full test output by re-running with capture
+            _, console_output = capture_console_output(
+                run_test_without_save, table_107_results, table_109_results
+            )
+            
+            # Save console output
+            console_file = os.path.join(report_folder, "console_output.txt")
+            with open(console_file, 'w') as f:
+                f.write("COMPREHENSIVE PAYMENT SCHEDULE ALGORITHM TEST REPORT\n")
+                f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                f.write("=" * 80 + "\n\n")
+                f.write(console_output)
+            
+            print(f"📄 Console output saved to: {console_file}")
+            print(f"📁 Complete report saved in folder: {report_folder}")
+            
+        except Exception as e:
+            print(f"❌ Error saving console output: {e}")
+
+
+def run_test_without_save(table_107_results, table_109_results):
+    """Run the display part of tests without saving (for output capture)."""
+    if table_109_results:
+        print_table_results(table_109_results)
+    
+    if table_107_results:
+        print_table_results(table_107_results)
+    
+    print_comparative_summary(table_107_results, table_109_results)
 
 
 if __name__ == "__main__":
-    comprehensive_algorithm_test()
+    parser = argparse.ArgumentParser(
+        description="Test payment schedule algorithm performance",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python test_algorithm.py                    # Run tests (no files saved)
+  python test_algorithm.py --save-report     # Run tests and save report folder
+        """
+    )
+    
+    parser.add_argument(
+        '--save-report',
+        action='store_true',
+        default=False,
+        help='Save comprehensive report to timestamped folder (default: False)'
+    )
+    
+    args = parser.parse_args()
+    comprehensive_algorithm_test(save_report=args.save_report)
