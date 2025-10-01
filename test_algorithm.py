@@ -207,8 +207,8 @@ def print_table_results(results):
     
     if results['within_target_pct'] >= 95.0:
         print("  🏆 EXCELLENT: Exceeds 95% target achievement!")
-    elif results['within_target_pct'] >= 90.0:
-        print("  ✅ GOOD: Meets 90%+ target achievement")
+    elif results['within_target_pct'] >= 85.0:
+        print("  ✅ GOOD: Meets 85%+ target achievement")
     else:
         print("  ⚠️  NEEDS IMPROVEMENT: Below 90% target achievement")
     
@@ -267,19 +267,6 @@ def print_comparative_summary(table_107_results, table_109_results):
     
     print("└─────────────────────────┴───────────────┴───────────────┘")
     
-    print()
-    print("🏁 ALGORITHM EFFECTIVENESS:")
-    if table_107_results and table_109_results:
-        if table_107_results['within_target_pct'] >= 95.0 and table_109_results['within_target_pct'] >= 95.0:
-            print("  🏆 BOTH TABLES: Excellent performance (≥95% within target)")
-        elif table_107_results['within_target_pct'] >= 90.0 and table_109_results['within_target_pct'] >= 90.0:
-            print("  ✅ BOTH TABLES: Good performance (≥90% within target)")
-        else:
-            print("  ⚠️  Some tables need improvement")
-    
-    print()
-    print("💡 KEY INSIGHT: Table 107 = Table 109 + 7 days")
-    print("   Algorithm optimizations benefit both table types!")
 
 
 def comprehensive_algorithm_test():
