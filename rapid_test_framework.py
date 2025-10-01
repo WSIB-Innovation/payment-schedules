@@ -17,22 +17,18 @@ class RapidTester:
         self.ground_truth = self.load_ground_truth()
         
     def load_ground_truth(self):
-        """Load all ground truth data"""
+        """Load ALL available ground truth data"""
         data = {}
-        # Include original data files (old naming convention)
-        for year in [2014, 2015, 2016, 2017, 2018]:
-            gt_file = f"table_examples/table_109_year_{year}.txt"
-            if os.path.exists(gt_file):
-                year_data = self.parse_payment_table(gt_file, year)
-                data.update(year_data)
-        
-        # Include new data files (new naming convention)
-        for year in [2020, 2021, 2022, 2023, 2024, 2025, 2026]:
+        # Load ALL available years (they all use table_109_{year}.txt format)
+        for year in [2014, 2015, 2016, 2017, 2018, 2020, 2021, 2022, 2023, 2024, 2025, 2026]:
             gt_file = f"table_examples/table_109_{year}.txt"
             if os.path.exists(gt_file):
+                print(f"Loading {gt_file}...")
                 year_data = self.parse_payment_table(gt_file, year)
                 data.update(year_data)
+                print(f"  → Loaded {len([k for k in year_data.keys() if k[0] == year])*31:,} potential dates for {year}")
         
+        print(f"Total ground truth data loaded: {len(data)} month-entries")
         return data
     
     def parse_payment_table(self, filepath, year):
