@@ -701,9 +701,15 @@
                 const labourDay = this.getNthWeekdayOfMonth(this.year, 8, 1, 1);
                 holidays.push({date: this.formatDate(labourDay), name: "Labour Day", isCustom: false});
                 
+                // National Day for Truth and Reconciliation (September 30)
+                holidays.push({date: this.formatDate(new Date(this.year, 8, 30)), name: "National Day for Truth and Reconciliation", isCustom: false});
+                
                 // Thanksgiving (2nd Monday in October)
                 const thanksgiving = this.getNthWeekdayOfMonth(this.year, 9, 1, 2);
-                holidays.push({date: this.formatDate(thanksgiving), name: "Thanksgiving", isCustom: false});
+                holidays.push({date: this.formatDate(thanksgiving), name: "Thanksgiving Day", isCustom: false});
+                
+                // Remembrance Day (November 11)
+                holidays.push({date: this.formatDate(new Date(this.year, 10, 11)), name: "Remembrance Day", isCustom: false});
                 
                 // Christmas Day
                 holidays.push({date: this.formatDate(new Date(this.year, 11, 25)), name: "Christmas Day", isCustom: false});
@@ -764,9 +770,15 @@
                 const labourDay = this.getNthWeekdayOfMonth(this.year, 8, 1, 1);
                 holidays.add(this.formatDate(labourDay));
                 
+                // National Day for Truth and Reconciliation (September 30)
+                holidays.add(this.formatDate(new Date(this.year, 8, 30)));
+                
                 // Thanksgiving (2nd Monday in October)
                 const thanksgiving = this.getNthWeekdayOfMonth(this.year, 9, 1, 2);
                 holidays.add(this.formatDate(thanksgiving));
+                
+                // Remembrance Day (November 11)
+                holidays.add(this.formatDate(new Date(this.year, 10, 11)));
                 
                 // Christmas Day
                 holidays.add(this.formatDate(new Date(this.year, 11, 25)));
