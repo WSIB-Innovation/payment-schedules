@@ -264,6 +264,214 @@
             font-size: 0.9em;
         }
 
+        .holiday-customization {
+            background: var(--trillium);
+            border: 1px solid var(--concrete);
+            border-radius: 10px;
+            margin-top: 32px;
+        }
+
+        .holiday-header {
+            background: var(--trillium);
+            color: var(--carbon);
+            cursor: pointer;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Mulish', serif;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .holiday-header:hover {
+            background: var(--snow);
+            color: var(--carbon);
+        }
+
+        .holiday-header.active {
+            background: var(--snow);
+            color: var(--carbon);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .holiday-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: var(--trillium);
+            border-radius: 0 0 10px 10px;
+        }
+
+        .holiday-content.active {
+            max-height: 80vh;
+            overflow-y: auto;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .holiday-content-inner {
+            padding: 24px;
+        }
+
+        .holiday-list {
+            margin-bottom: 24px;
+            max-height: 40vh;
+            overflow-y: auto;
+        }
+
+        .holiday-list-container {
+            max-height: 35vh;
+            overflow-y: auto;
+            border: 1px solid var(--concrete);
+            border-radius: 8px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .holiday-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .holiday-list-container::-webkit-scrollbar-track {
+            background: var(--snow);
+            border-radius: 4px;
+        }
+
+        .holiday-list-container::-webkit-scrollbar-thumb {
+            background: var(--concrete);
+            border-radius: 4px;
+        }
+
+        .holiday-list-container::-webkit-scrollbar-thumb:hover {
+            background: var(--granite);
+        }
+
+        .holiday-list h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--carbon);
+        }
+
+        .holiday-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: var(--snow);
+            border: 1px solid var(--concrete);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .holiday-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .holiday-name {
+            font-weight: 600;
+            color: var(--carbon);
+            margin-bottom: 4px;
+        }
+
+        .holiday-date {
+            font-size: 14px;
+            color: var(--gray-3);
+        }
+
+        .holiday-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            background: var(--red);
+            color: var(--trillium);
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: 'Mulish', serif;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-small:hover {
+            background: #b30000;
+        }
+
+        .btn-small.secondary {
+            background: var(--concrete);
+            color: var(--carbon);
+        }
+
+        .btn-small.secondary:hover {
+            background: var(--granite);
+            color: var(--trillium);
+        }
+
+        .add-holiday-section {
+            border-top: 2px solid var(--concrete);
+            padding-top: 24px;
+            background: var(--snow);
+            padding: 24px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+
+        .add-holiday-form {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+
+        .add-holiday-form input[type="date"],
+        .add-holiday-form input[type="text"] {
+            padding: 8px 12px;
+            border: 1px solid var(--gray-3);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Mulish', serif;
+            background: var(--trillium);
+        }
+
+        .add-holiday-form input:focus {
+            outline: none;
+            border-color: var(--blue-jay);
+        }
+
+        .holiday-controls {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-start;
+        }
+
+        .btn-add {
+            background: #28a745;
+            color: var(--trillium);
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Mulish', serif;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-add:hover {
+            background: #218838;
+        }
+
         @media (max-width: 768px) {
             .controls-grid {
                 flex-direction: column;
@@ -291,6 +499,22 @@
 
             .results {
                 padding: 24px;
+            }
+
+            .add-holiday-form {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .holiday-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .holiday-actions {
+                width: 100%;
+                justify-content: flex-end;
             }
         }
     </style>
@@ -340,6 +564,46 @@
                     <button class="btn" id="downloadBtn" onclick="downloadResults()" disabled>Download Results</button>
                 </div>
             </div>
+
+            <!-- Holiday Customization Widget -->
+            <div class="holiday-customization">
+                <button class="holiday-header" onclick="toggleHolidayCustomization()">
+                    <span>Holiday Customization</span>
+                    <span class="collapsible-icon">▼</span>
+                </button>
+                <div class="holiday-content" id="holidayContent">
+                    <div class="holiday-content-inner">
+                        <div class="holiday-list">
+                            <h4>Current Holidays for <span id="holidayYear">2024</span></h4>
+                            <div class="holiday-list-container">
+                                <div id="holidayListContainer">
+                                    <!-- Holiday items will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="add-holiday-section">
+                            <h4>Add Custom Holiday</h4>
+                            <div class="add-holiday-form">
+                                <div>
+                                    <label for="holidayDate" style="font-size: 14px; margin-bottom: 4px; display: block;">Date:</label>
+                                    <input type="date" id="holidayDate" />
+                                </div>
+                                <div>
+                                    <label for="holidayName" style="font-size: 14px; margin-bottom: 4px; display: block;">Holiday Name:</label>
+                                    <input type="text" id="holidayName" placeholder="Enter holiday name" />
+                                </div>
+                                <div>
+                                    <button class="btn-add" onclick="addCustomHoliday()">Add Holiday</button>
+                                </div>
+                            </div>
+                            <div class="holiday-controls">
+                                <button class="btn-small secondary" onclick="resetToDefaults()">Reset to Defaults</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="results" id="results">
@@ -350,6 +614,47 @@
     </div>
 
     <script>
+        // Holiday Management System
+        class HolidayManager {
+            constructor() {
+                this.customHolidays = new Map(); // year -> Set of holiday objects
+            }
+
+            setCustomHolidays(year, holidays) {
+                this.customHolidays.set(year, new Set(holidays));
+            }
+
+            getCustomHolidays(year) {
+                return this.customHolidays.get(year) || new Set();
+            }
+
+            addCustomHoliday(year, date, name, isCustom = true) {
+                if (!this.customHolidays.has(year)) {
+                    this.customHolidays.set(year, new Set());
+                }
+                this.customHolidays.get(year).add({date, name, isCustom});
+            }
+
+            removeHoliday(year, date) {
+                if (this.customHolidays.has(year)) {
+                    const holidays = this.customHolidays.get(year);
+                    for (const holiday of holidays) {
+                        if (holiday.date === date) {
+                            holidays.delete(holiday);
+                            break;
+                        }
+                    }
+                }
+            }
+
+
+            resetToDefaults(year) {
+                const defaultCalculator = new CanadianHolidays(year);
+                const defaultHolidays = defaultCalculator.getDefaultHolidays();
+                this.customHolidays.set(year, new Set(defaultHolidays));
+            }
+        }
+
         // Canadian Holidays Calculator
         class CanadianHolidays {
             constructor(year) {
@@ -357,7 +662,70 @@
                 this.holidays = this.calculateHolidays();
             }
 
+            getDefaultHolidays() {
+                const holidays = [];
+                
+                // New Year's Day
+                holidays.push({date: this.formatDate(new Date(this.year, 0, 1)), name: "New Year's Day", isCustom: false});
+                
+                // Family Day (3rd Monday in February)
+                const familyDay = this.getNthWeekdayOfMonth(this.year, 1, 1, 3);
+                holidays.push({date: this.formatDate(familyDay), name: "Family Day", isCustom: false});
+                
+                // Easter and Good Friday
+                const easter = this.calculateEaster(this.year);
+                const goodFriday = new Date(easter.getTime() - 2 * 24 * 60 * 60 * 1000);
+                holidays.push({date: this.formatDate(goodFriday), name: "Good Friday", isCustom: false});
+                holidays.push({date: this.formatDate(easter), name: "Easter Sunday", isCustom: false});
+                
+                // Easter Monday
+                const easterMonday = new Date(easter.getTime() + 24 * 60 * 60 * 1000);
+                holidays.push({date: this.formatDate(easterMonday), name: "Easter Monday", isCustom: false});
+                
+                // Victoria Day (Monday before May 25)
+                const victoriaDay = this.getVictoriaDay(this.year);
+                holidays.push({date: this.formatDate(victoriaDay), name: "Victoria Day", isCustom: false});
+                
+                // Canada Day
+                let canadaDay = new Date(this.year, 6, 1);
+                if (canadaDay.getDay() === 0) { // Sunday
+                    canadaDay = new Date(this.year, 6, 2);
+                }
+                holidays.push({date: this.formatDate(canadaDay), name: "Canada Day", isCustom: false});
+                
+                // Civic Holiday (1st Monday in August)
+                const civicHoliday = this.getNthWeekdayOfMonth(this.year, 7, 1, 1);
+                holidays.push({date: this.formatDate(civicHoliday), name: "Civic Holiday", isCustom: false});
+                
+                // Labour Day (1st Monday in September)
+                const labourDay = this.getNthWeekdayOfMonth(this.year, 8, 1, 1);
+                holidays.push({date: this.formatDate(labourDay), name: "Labour Day", isCustom: false});
+                
+                // Thanksgiving (2nd Monday in October)
+                const thanksgiving = this.getNthWeekdayOfMonth(this.year, 9, 1, 2);
+                holidays.push({date: this.formatDate(thanksgiving), name: "Thanksgiving", isCustom: false});
+                
+                // Christmas Day
+                holidays.push({date: this.formatDate(new Date(this.year, 11, 25)), name: "Christmas Day", isCustom: false});
+                
+                // Boxing Day
+                holidays.push({date: this.formatDate(new Date(this.year, 11, 26)), name: "Boxing Day", isCustom: false});
+                
+                return holidays;
+            }
+
             calculateHolidays() {
+                // Check if we have custom holidays for this year
+                const customHolidays = holidayManager.getCustomHolidays(this.year);
+                if (customHolidays.size > 0) {
+                    const holidayDates = new Set();
+                    customHolidays.forEach(holiday => {
+                        holidayDates.add(holiday.date);
+                    });
+                    return holidayDates;
+                }
+                
+                // Use default holidays if no custom holidays are set
                 const holidays = new Set();
                 
                 // New Year's Day
@@ -803,6 +1171,152 @@
 
         // Global variables
         let currentResults = '';
+        const holidayManager = new HolidayManager();
+
+        // Holiday Management Functions
+        function toggleHolidayCustomization() {
+            const header = document.querySelector('.holiday-header');
+            const content = document.getElementById('holidayContent');
+            
+            header.classList.toggle('active');
+            content.classList.toggle('active');
+            
+            // Update holiday list when opening
+            if (content.classList.contains('active')) {
+                updateHolidayList();
+            }
+        }
+
+        function updateHolidayList() {
+            const year = parseInt(document.getElementById('year').value) || new Date().getFullYear();
+            document.getElementById('holidayYear').textContent = year;
+            
+            const container = document.getElementById('holidayListContainer');
+            container.innerHTML = '';
+            
+            // Get current holidays for the year
+            let currentHolidays = holidayManager.getCustomHolidays(year);
+            
+            // If no custom holidays are set, use defaults
+            if (currentHolidays.size === 0) {
+                const defaultCalculator = new CanadianHolidays(year);
+                const defaultHolidays = defaultCalculator.getDefaultHolidays();
+                holidayManager.setCustomHolidays(year, defaultHolidays);
+                currentHolidays = holidayManager.getCustomHolidays(year);
+            }
+            
+            // Check if there are any holidays
+            if (currentHolidays.size === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 20px; color: var(--gray-3); font-style: italic;">
+                        No holidays configured for ${year}
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort holidays by date
+            const sortedHolidays = Array.from(currentHolidays).sort((a, b) => {
+                return new Date(a.date) - new Date(b.date);
+            });
+            
+            sortedHolidays.forEach(holiday => {
+                const holidayItem = document.createElement('div');
+                holidayItem.className = 'holiday-item';
+                
+                const formattedDate = new Date(holiday.date).toLocaleDateString('en-CA', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                holidayItem.innerHTML = `
+                    <div class="holiday-info">
+                        <div class="holiday-name">${holiday.name}${holiday.isCustom ? ' (Custom)' : ''}</div>
+                        <div class="holiday-date">${formattedDate}</div>
+                    </div>
+                    <div class="holiday-actions">
+                        <button class="btn-small" onclick="removeHoliday('${holiday.date}')">Remove</button>
+                    </div>
+                `;
+                
+                container.appendChild(holidayItem);
+            });
+        }
+
+        function addCustomHoliday() {
+            const year = parseInt(document.getElementById('year').value) || new Date().getFullYear();
+            const dateInput = document.getElementById('holidayDate');
+            const nameInput = document.getElementById('holidayName');
+            
+            if (!dateInput.value || !nameInput.value.trim()) {
+                alert('Please enter both a date and holiday name.');
+                return;
+            }
+            
+            const holidayDate = dateInput.value;
+            const holidayName = nameInput.value.trim();
+            
+            // Check if the date is in the correct year
+            const inputYear = new Date(holidayDate).getFullYear();
+            if (inputYear !== year) {
+                alert(`Please select a date in ${year}.`);
+                return;
+            }
+            
+            // Check if holiday already exists
+            const existingHolidays = holidayManager.getCustomHolidays(year);
+            for (const holiday of existingHolidays) {
+                if (holiday.date === holidayDate) {
+                    alert('A holiday already exists on this date.');
+                    return;
+                }
+            }
+            
+            holidayManager.addCustomHoliday(year, holidayDate, holidayName, true);
+            
+            // Clear inputs
+            dateInput.value = '';
+            nameInput.value = '';
+            
+            // Update display
+            updateHolidayList();
+            
+            // Regenerate schedule if needed
+            if (currentResults) {
+                generateSchedule();
+            }
+        }
+
+        function removeHoliday(date) {
+            const year = parseInt(document.getElementById('year').value) || new Date().getFullYear();
+            
+            if (confirm('Are you sure you want to remove this holiday?')) {
+                holidayManager.removeHoliday(year, date);
+                updateHolidayList();
+                
+                // Regenerate schedule if needed
+                if (currentResults) {
+                    generateSchedule();
+                }
+            }
+        }
+
+        function resetToDefaults() {
+            const year = parseInt(document.getElementById('year').value) || new Date().getFullYear();
+            
+            if (confirm('This will reset all holidays to the default Canadian holidays. Continue?')) {
+                holidayManager.resetToDefaults(year);
+                updateHolidayList();
+                
+                // Regenerate schedule if needed
+                if (currentResults) {
+                    generateSchedule();
+                }
+            }
+        }
+
 
         // Generate schedule function
         function generateSchedule() {
@@ -940,6 +1454,11 @@
             setTimeout(() => {
                 generateSchedule();
             }, 100);
+            
+            // Update holiday list when year changes
+            document.getElementById('year').addEventListener('change', function() {
+                updateHolidayList();
+            });
         });
     </script>
 </body>
